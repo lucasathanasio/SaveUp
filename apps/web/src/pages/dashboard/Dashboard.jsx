@@ -7,6 +7,7 @@ import BaseCard from "../../components/ui/BaseCard";
 import ChartCard from "../../components/ui/ChartCard";
 import ExpensesBarChart from "./components/ExpensesBarChart";
 import CategoriesPieChart from "./components/CategoriesPieChart";
+import RecentTransactionsCard from "./components/RecentTransactionsCard";
 
 const Dashboard = () => {
   return (
@@ -39,6 +40,11 @@ const Dashboard = () => {
         <ChartCard title="Categorias" className="md:col-span-1">
           <CategoriesPieChart />
         </ChartCard>
+
+        <RecentTransactionsCard
+          className="md:col-span-3"
+          title="Transações Recentes"
+        />
       </div>
     </>
   );
