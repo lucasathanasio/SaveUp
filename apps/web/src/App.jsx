@@ -1,9 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/layout/MainLayout";
-import Dashboard from "../src/pages/dashboard/Dashboard";
-//import Register from "../src/pages/auth/Register";
-//import Login from "../src/pages/auth/Login";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Transactions from "./pages/transactions/Transactions";
+//import Register from "./pages/auth/Register";
+//import Login from "./pages/auth/Login";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/transactions" element={<Transactions />} />
       </Route>
     </Routes>
   );
