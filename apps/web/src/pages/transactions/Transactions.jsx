@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
+
 import ChartCard from "../../components/ui/ChartCard";
 import Button from "../../components/ui/Button";
-import TransactionFilters from "./components/TransactionFilter";
+import TransactionFilters from "./components/TransactionFilters";
 import TransactionsList from "./components/TransactionList";
+
+import { useTransactionFilters } from "../../hooks/useTransactionFilters";
 
 import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -50,48 +52,8 @@ const data = [
 ];
 
 const Transactions = () => {
-  const [filters, setFilters] = useState({
-    search: "",
-    category: "Todas",
-    type: "Todas",
-    period: null,
-    maxValue: 5000,
-  });
-
-  const daysFromPeriod = { "7 Dias": 7, "30 Dias": 30, "90 Dias": 90 };
-
-  const filteredTransactions = data.filter((transaction) => {
-    const matchesSearch = transaction.name
-      .toLowerCase()
-      .includes(filters.search.toLowerCase());
-
-    const matchesCategory =
-      filters.category === "Todas" || transaction.category === filters.category;
-
-    const matchesType =
-      filters.type === "Todas" ||
-      transaction.type.toLowerCase() === filters.type.toLowerCase();
-
-    const matchesValue = transaction.value <= filters.maxValue;
-
-    const matchesPeriod = (() => {
-      // ← aqui, dentro do filter, usa "transaction" do escopo
-      if (!filters.period) return true;
-      const days = daysFromPeriod[filters.period];
-      const transactionDate = new Date(transaction.date);
-      const today = new Date();
-      const diffInDays = (today - transactionDate) / (1000 * 60 * 60 * 24);
-      return diffInDays <= days;
-    })();
-
-    return (
-      matchesSearch &&
-      matchesCategory &&
-      matchesType &&
-      matchesValue &&
-      matchesPeriod
-    );
-  });
+  const { filters, setFilters, filteredTransactions } =
+    useTransactionFilters(data);
 
   return (
     <>
@@ -110,9 +72,6 @@ const Transactions = () => {
             title="Adicionar"
             description="Transação"
           />
-          {/* CODIGO PARA A PROXIMA TELA
-          <Button variant="secondary" description="Mês Anterior" />
-          */}
         </div>
       </div>
 
