@@ -78,7 +78,7 @@ const CategoryCard = ({
         <span className="text-dark-gray/50">
           {remaining >= 0
             ? `Restam R$ ${remaining.toFixed(2).replace(".", ",")}`
-            : `Restam - R$ ${Math.abs(remaining).toFixed(2).replace(".", ",")}`}
+            : `Excedido R$ ${Math.abs(remaining).toFixed(2).replace(".", ",")}`}
         </span>
       </div>
     </BaseCard>

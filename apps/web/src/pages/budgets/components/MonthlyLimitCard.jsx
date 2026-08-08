@@ -20,11 +20,12 @@ const MonthlyLimitCard = ({ limit, spent }) => {
         />
       </div>
 
-      <div className="flex justify-between text-xs">
+      <div className="block md:flex justify-between text-xs">
         <span className="text-dark-gray/60">
           Gastos até agora: R$ {spent.toFixed(2).replace(".", ",")} (
           {percentage.toFixed(0)}%)
         </span>
+        <br />
         <span className="text-dark-gray/60">
           Restante: R$ {remaining.toFixed(2).replace(".", ",")}
         </span>
