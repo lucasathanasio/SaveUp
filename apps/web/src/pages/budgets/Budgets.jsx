@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import Button from "../../components/ui/Button";
 import MonthlyLimitCard from "./components/MonthlyLimitCard";
-import SmartTipCard from "./components/SmartTipCard";
-import CategoryCard from "./components/CategoryCard";
-import AddCategoryCard from "./components/AddCategoryCard";
+import SmartTipCard from "../../components/ui/SmartTipCard";
+import StatusLegend from "../../components/ui/StatusLegend";
+import ItemCard from "../../components/ui/ItemCard";
+import AddItemCard from "../../components/ui/AddItemCard";
 
 import AddIcon from "@mui/icons-material/Add";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
@@ -125,6 +126,29 @@ const budgetsByMonth = {
   },
 };
 
+const statusConfig = {
+  controlado: {
+    label: "Controlado",
+    barColor: "bg-dark-green",
+    color: "var(--color-dark-green)",
+  },
+  alerta: {
+    label: "% Gasto",
+    barColor: "bg-yellow",
+    color: "var(--color-yellow)",
+  },
+  excedido: {
+    label: "Excedido",
+    barColor: "bg-dark-red",
+    color: "var(--color-dark-red)",
+  },
+  meta: {
+    label: "Na Meta",
+    barColor: "bg-medium-green",
+    color: "var(--color-medium-green)",
+  },
+};
+
 const Budgets = () => {
   const [selectedDate, setSelectedDate] = useState(new Date(2026, 7, 1)); // Agosto/2026, mês inicial
 
@@ -218,25 +242,47 @@ const Budgets = () => {
               <h2 className="text-dark-gray font-bold text-lg">
                 Categorias de Gastos
               </h2>
-              <div className="flex items-center gap-4 text-xs text-dark-gray/60">
-                <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-dark-green" />{" "}
-                  Controlado
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-yellow-500" /> Alerta
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-dark-red" /> Excedido
-                </span>
-              </div>
+              <StatusLegend
+                items={[
+                  { label: "Controlado", color: "var(--color-dark-green)" },
+                  { label: "Alerta", color: "var(--color-yellow)" },
+                  { label: "Excedido", color: "var(--color-dark-red)" },
+                ]}
+              />
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
-              {currentBudget.categories.map((c) => (
-                <CategoryCard key={c.id} {...c} />
-              ))}
-              <AddCategoryCard onClick={() => {}} />
+              {currentBudget.categories.map((c) => {
+                const percentage = Math.min((c.spent / c.limit) * 100, 100);
+                const remaining = c.limit - c.spent;
+                const config = statusConfig[c.status];
+
+                return (
+                  <ItemCard
+                    key={c.id}
+                    name={c.name}
+                    icon={c.icon}
+                    iconBg={c.iconBg}
+                    iconColor={c.iconColor}
+                    current={c.spent}
+                    total={c.limit}
+                    amountSuffix={`de R$ ${c.limit.toFixed(2).replace(".", ",")}`}
+                    barColor={config.barColor}
+                    footerLeft={
+                      c.status === "alerta"
+                        ? `${percentage.toFixed(0)}% Gasto`
+                        : config.label
+                    }
+                    footerLeftColor={config.color}
+                    footerRight={
+                      remaining >= 0
+                        ? `Restam R$ ${remaining.toFixed(2).replace(".", ",")}`
+                        : `Excedido R$ ${Math.abs(remaining).toFixed(2).replace(".", ",")}`
+                    }
+                  />
+                );
+              })}
+              <AddItemCard label="Adicionar Categoria" onClick={() => {}} />
             </div>
           </div>
         </>
