@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Transactions from "./pages/transactions/Transactions";
 import Budgets from "./pages/budgets/Budgets";
 import Goals from "./pages/goals/Goals";
+import Analytics from "./pages/analytics/Analytics";
 //import Register from "./pages/auth/Register";
 //import Login from "./pages/auth/Login";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/budgets" element={<Budgets />} />
         <Route path="/goals" element={<Goals />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Route>
     </Routes>
   );

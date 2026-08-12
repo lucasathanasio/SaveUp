@@ -3,6 +3,9 @@ export const chartColors = {
   despesas: "var(--color-dark-red)",
   // balance: "var(--color-blue)",
 
+  atual: "var(--color-medium-cyan)",
+  anterior: "var(--color-medium-orange)",
+
   categories: [
     "var(--color-medium-blue)",
     "var(--color-light-green)",
