@@ -6,6 +6,8 @@ import { PieSlice } from "@/components/charts/pie-slice";
 import BaseCard from "../../../components/ui/BaseCard";
 
 const CategoriesDonutCard = ({ total, monthLabel, categories }) => {
+  const navigate = useNavigate();
+
   return (
     <BaseCard className="h-auto">
       <div className="flex items-center justify-between mb-4">
@@ -21,7 +23,7 @@ const CategoriesDonutCard = ({ total, monthLabel, categories }) => {
         </button>
       </div>
 
-      <div className="flex items-center gap-6">
+      <div className="flex flex-col lg:flex-row items-center gap-6">
         <div className="relative w-32 h-32 shrink-0">
           <PieChart
             data={categories}
@@ -48,7 +50,7 @@ const CategoriesDonutCard = ({ total, monthLabel, categories }) => {
         </div>
 
         {/* Legenda */}
-        <div className="flex flex-col gap-2 flex-1">
+        <div className="flex flex-col gap-2 flex-1 w-full">
           {categories.map((category) => (
             <div
               key={category.name}

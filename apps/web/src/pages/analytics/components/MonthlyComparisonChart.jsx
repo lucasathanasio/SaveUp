@@ -7,38 +7,15 @@ import { ChartTooltip } from "@/components/charts/tooltip";
 
 import { chartColors } from "@/constants/chartColors";
 
-const MonthlyComparisonChart = ({ data }) => {
-  return (
-    <LineChart
-      data={data}
-      xDataKey="week"
-      margin={{ left: 10 }}
-      aspectRatio="2.2 / 1"
-    >
-      <Grid horizontal />
-
-      <XAxis />
-
-      <YAxis />
-
-      <Line
-        dataKey="atual"
-        stroke={chartColors.atual}
-        strokeWidth={2}
-        dot={false}
-      />
-
-      <Line
-        dataKey="anterior"
-        stroke={chartColors.anterior}
-        strokeOpacity={0.3}
-        strokeWidth={2}
-        dot={false}
-      />
-
-      <ChartTooltip />
-    </LineChart>
-  );
-};
+const MonthlyComparisonChart = ({ data }) => (
+  <LineChart data={data} xDataKey="date" style={{ height: 200 }}>
+    <Grid />
+    <XAxis />
+    <YAxis />
+    <Line dataKey="atual" stroke={"var(--color-medium-cyan)"} />
+    <Line dataKey="anterior" stroke={"var(--color-medium-orange)"} />
+    <ChartTooltip />
+  </LineChart>
+);
 
 export default MonthlyComparisonChart;
