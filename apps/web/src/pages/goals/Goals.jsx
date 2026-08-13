@@ -88,7 +88,7 @@ const goals = [
 const Goals = () => {
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-6 md:h-16 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-1 md:h-16 gap-4">
         <div>
           <span className="text-lg md:text-xl text-dark-gray font-bold">
             Metas Financeiras
@@ -109,7 +109,7 @@ const Goals = () => {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3 mt-5 px-6">
+      <div className="grid gap-6 md:grid-cols-3 mt-5 px-1">
         <div className="md:col-span-2">
           <FeaturedGoalCard {...featuredGoal} />
         </div>
@@ -130,7 +130,7 @@ const Goals = () => {
         </SmartTipCard>
       </div>
 
-      <div className="px-6 mt-8">
+      <div className="px-1 mt-8">
         <div className="block md:flex items-center justify-between mb-4">
           <h2 className="text-dark-gray font-bold text-lg">Suas Metas</h2>
           <StatusLegend

@@ -1,5 +1,5 @@
 const SegmentedControl = ({ options, active, onChange }) => (
-  <div className="flex bg-dark-gray/5 rounded-full p-1 cursor-pointer">
+  <div className="flex bg-dark-gray/5 max-w-[258px] rounded-full p-1 cursor-pointer">
     {options.map((opt) => (
       <button
         key={opt}

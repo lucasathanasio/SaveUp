@@ -185,7 +185,7 @@ const Budgets = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-6 md:h-16 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-1 md:h-16 gap-4">
         <div>
           <span className="text-lg md:text-xl text-dark-gray font-bold">
             Orçamento Mensal
@@ -227,7 +227,7 @@ const Budgets = () => {
 
       {currentBudget ? (
         <>
-          <div className="grid gap-6 md:grid-cols-3 mt-5 px-6">
+          <div className="grid gap-6 md:grid-cols-3 mt-5 px-1">
             <div className="md:col-span-2">
               <MonthlyLimitCard
                 limit={currentBudget.limit}
@@ -237,7 +237,7 @@ const Budgets = () => {
             <SmartTipCard savedAmount={currentBudget.savedAmount} />
           </div>
 
-          <div className="px-6 mt-8">
+          <div className="px-1 mt-8">
             <div className="block md:flex items-center justify-between mb-4">
               <h2 className="text-dark-gray font-bold text-lg">
                 Categorias de Gastos
@@ -287,7 +287,7 @@ const Budgets = () => {
           </div>
         </>
       ) : (
-        <p className="text-dark-gray/50 text-center mt-10 px-6">
+        <p className="text-dark-gray/50 text-center mt-10 px-1">
           Nenhum dado de orçamento disponível para este mês.
         </p>
       )}

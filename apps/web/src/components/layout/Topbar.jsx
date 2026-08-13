@@ -47,7 +47,7 @@ const Topbar = ({ onMenuToggle, menuOpen, onSearchToggle }) => {
         </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 md:gap-6 px-3">
           <button
             onClick={handleSearchToggle}
             className={`lg:hidden text-dark-gray/80 hover:text-medium-blue transition-colors

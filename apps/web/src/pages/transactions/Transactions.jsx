@@ -57,7 +57,7 @@ const Transactions = () => {
 
   return (
     <>
-      <div className="block md:flex items-center justify-between px-6 h-16">
+      <div className="block md:flex items-center justify-between px-1 h-16">
         <div>
           <span className="text-dark-gray font-bold text-xl">Extrato</span>
           <br />

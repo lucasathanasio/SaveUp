@@ -12,7 +12,7 @@ import RecentTransactionsCard from "./components/RecentTransactionsCard";
 const Dashboard = () => {
   return (
     <>
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-3 px-1">
         <BaseCard title="Saldo Total" value="R$ 100.000,00" icon={MoneyIcon} />
 
         <BaseCard
