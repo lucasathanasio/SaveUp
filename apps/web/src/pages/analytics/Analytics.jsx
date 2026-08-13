@@ -119,7 +119,7 @@ const Analytics = () => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-6 md:h-16 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between px-1 md:h-16 gap-4">
         <div>
           <span className="text-lg md:text-xl text-dark-gray font-bold">
             Análises e Insights
@@ -137,8 +137,8 @@ const Analytics = () => {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3 mt-5 px-6">
-        <div className="flex flex-col gap-6">
+      <div className="grid gap-6 md:grid-cols-3 mt-5 px-1">
+        <div className="order-2 md:order-0 flex flex-col gap-6">
           <InsightCard
             icon={TrendingUpIcon}
             iconColor="var(--color-dark-green)"
@@ -166,10 +166,10 @@ const Analytics = () => {
         <ChartCard
           title="Comparação mês a mês"
           description="Visualize seus gastos por período"
-          className="md:col-span-2 min-w-50"
+          className="order-1 md:order-0 md:col-span-2 min-w-50"
         >
           <div className="min-w-50">
-            <MonthlyComparisonChart data={comparisonData} />
+            <MonthlyComparisonChart key={period} data={comparisonData} />
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
               <div className="bg-dark-gray/5 rounded-xl p-3">
                 <p className="text-dark-gray/60 text-xs">Total Gasto</p>
@@ -203,10 +203,10 @@ const Analytics = () => {
         </ChartCard>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 mt-6 px-6">
+      <div className="grid gap-6 md:grid-cols-2 mt-6 px-1">
         <CategoriesDonutCard
           total="4.2K"
-          monthLabel="ABRIL"
+          monthLabel="Agosto"
           categories={categoriesData}
         />
         <SavingsGoalsCard goals={savingsGoalsWithPercentage} />
