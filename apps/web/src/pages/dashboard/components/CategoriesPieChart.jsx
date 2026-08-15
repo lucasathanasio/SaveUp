@@ -25,7 +25,7 @@ const data = [
 
 const CategoriesPieChart = () => {
   return (
-    <PieChart data={data} innerRadius={70}>
+    <PieChart data={data} innerRadius={70} size={220}>
       {data.map((item, index) => (
         <PieSlice
           key={item.label}

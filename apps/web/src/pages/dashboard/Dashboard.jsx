@@ -32,19 +32,25 @@ const Dashboard = () => {
         <ChartCard
           title="Receitas x Despesas"
           description="Análise do seu ano financeiro"
-          className="md:col-span-2"
+          className="md:col-span-2 "
         >
           <ExpensesBarChart />
         </ChartCard>
 
-        <ChartCard title="Categorias" className="md:col-span-1">
+        <ChartCard
+          title="Categorias"
+          description="Veja onde seus gastos estão concentrados"
+          className="md:col-span-1"
+        >
           <CategoriesPieChart />
         </ChartCard>
 
+        {/*
         <RecentTransactionsCard
           className="md:col-span-3"
           title="Transações Recentes"
         />
+        */}
       </div>
     </>
   );
