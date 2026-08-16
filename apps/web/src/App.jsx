@@ -7,16 +7,15 @@ import Budgets from "./pages/budgets/Budgets";
 import Goals from "./pages/goals/Goals";
 import Analytics from "./pages/analytics/Analytics";
 import Settings from "./pages/settings/Settings";
-//import Register from "./pages/auth/Register";
-//import Login from "./pages/auth/Login";
+import Register from "./pages/auth/register/Register";
+import Login from "./pages/auth/login/Login";
 
 function App() {
   return (
     <Routes>
-      {/* páginas sem Sidebar e Topbar 
+      {/* páginas sem Sidebar e Topbar */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      */}
 
       {/* páginas com Sidebar e Topbar */}
       <Route element={<MainLayout />}>
