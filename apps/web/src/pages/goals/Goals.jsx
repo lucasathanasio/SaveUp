@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Button from "../../components/ui/Button";
 import SmartTipCard from "../../components/ui/SmartTipCard";
@@ -13,6 +13,9 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import FlightIcon from "@mui/icons-material/Flight";
 import WatchIcon from "@mui/icons-material/Watch";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+
+import Modal from "../../components/ui/Modal";
+import GoalForm from "./components/GoalForm";
 
 const featuredGoal = {
   name: "Reserva de Emergência",
@@ -86,6 +89,8 @@ const goals = [
 ];
 
 const Goals = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between px-1 md:h-16 gap-4">
@@ -105,7 +110,22 @@ const Goals = () => {
             icon={AddIcon}
             title="Nova"
             description="Meta"
+            onClick={() => setIsModalOpen(true)}
           />
+
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="Nova Categoria"
+          >
+            <GoalForm
+              onCancel={() => setIsModalOpen(false)}
+              onSubmit={(goal) => {
+                console.log(goal);
+                setIsModalOpen(false);
+              }}
+            />
+          </Modal>
         </div>
       </div>
 

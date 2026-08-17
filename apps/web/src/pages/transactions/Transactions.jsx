@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import ChartCard from "../../components/ui/ChartCard";
 import Button from "../../components/ui/Button";
@@ -11,6 +11,8 @@ import AddIcon from "@mui/icons-material/Add";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PixIcon from "@mui/icons-material/Pix";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import Modal from "../../components/ui/Modal";
+import TransactionForm from "./components/TransactionForm";
 
 const data = [
   {
@@ -55,6 +57,8 @@ const Transactions = () => {
   const { filters, setFilters, filteredTransactions } =
     useTransactionFilters(data);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
       <div className="block md:flex items-center justify-between px-1 h-16">
@@ -71,7 +75,22 @@ const Transactions = () => {
             icon={AddIcon}
             title="Adicionar"
             description="Transação"
+            onClick={() => setIsModalOpen(true)}
           />
+
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="Nova Transação"
+          >
+            <TransactionForm
+              onCancel={() => setIsModalOpen(false)}
+              onSubmit={(transaction) => {
+                console.log(transaction);
+                setIsModalOpen(false);
+              }}
+            />
+          </Modal>
         </div>
       </div>
 

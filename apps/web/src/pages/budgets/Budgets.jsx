@@ -14,6 +14,9 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
+import Modal from "../../components/ui/Modal";
+import CategoryForm from "./components/CategoryForm";
+
 const monthNames = [
   "Janeiro",
   "Fevereiro",
@@ -79,8 +82,8 @@ const budgetsByMonth = {
         id: 5,
         name: "Compras",
         icon: ShoppingCartIcon,
-        iconBg: "var(--color-extra-light-brown)",
-        iconColor: "var(--color-medium-brown)",
+        iconBg: "var(--color-extra-light-blue)",
+        iconColor: "var(--color-light-blue)",
         spent: 212,
         limit: 500,
         status: "controlado",
@@ -152,6 +155,8 @@ const statusConfig = {
 const Budgets = () => {
   const [selectedDate, setSelectedDate] = useState(new Date(2026, 7, 1)); // Agosto/2026, mês inicial
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const monthKey = `${selectedDate.getFullYear()}-${String(
     selectedDate.getMonth() + 1,
   ).padStart(2, "0")}`;
@@ -221,7 +226,22 @@ const Budgets = () => {
             icon={AddIcon}
             title="Nova"
             description="Categoria"
+            onClick={() => setIsModalOpen(true)}
           />
+
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            title="Nova Categoria"
+          >
+            <CategoryForm
+              onCancel={() => setIsModalOpen(false)}
+              onSubmit={(category) => {
+                console.log(category);
+                setIsModalOpen(false);
+              }}
+            />
+          </Modal>
         </div>
       </div>
 
