@@ -3,6 +3,7 @@ import React from "react";
 const variantClasses = {
   primary: "bg-dark-blue text-white",
   secondary: "bg-light-background text-dark-blue border border-dark-blue",
+  tertiary: "bg-medium-red text-white",
 };
 
 const Button = ({

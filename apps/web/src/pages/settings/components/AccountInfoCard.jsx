@@ -81,13 +81,7 @@ const AccountInfoCard = ({ user, onSave, onCancel, onLogout }) => {
             Encerre a sessão atual e saia da sua conta
           </p>
         </div>
-        <button
-          onClick={onLogout}
-          className="bg-medium-red text-white text-sm font-medium px-4 py-2
-            rounded-full hover:-translate-y-0.5 transition shrink-0"
-        >
-          Fazer Logout
-        </button>
+        <Button variant="tertiary" title="Fazer Logout" onClick={onLogout} />
       </div>
     </BaseCard>
   );

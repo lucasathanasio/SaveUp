@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AccountInfoCard from "./components/AccountInfoCard";
 import SecurityCard from "./components/SecurityCard";
 import ExportDataCard from "./components/ExportDataCard";
@@ -12,6 +13,8 @@ const User = {
 };
 
 const Settings = () => {
+  const navigate = useNavigate();
+
   const [preferences, setPreferences] = useState({
     darkMode: false,
     currency: "BRL",
@@ -44,7 +47,7 @@ const Settings = () => {
             user={User}
             onSave={(data) => console.log("salvar", data)}
             onCancel={() => {}}
-            onLogout={() => {}}
+            onLogout={() => navigate("/login")}
           />
 
           <div className="grid sm:grid-cols-2 gap-6">
