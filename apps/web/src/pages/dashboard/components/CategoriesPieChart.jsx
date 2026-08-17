@@ -25,17 +25,19 @@ const data = [
 
 const CategoriesPieChart = () => {
   return (
-    <PieChart data={data} innerRadius={70} size={220}>
-      {data.map((item, index) => (
-        <PieSlice
-          key={item.label}
-          index={index}
-          fill={chartColors.categories[index]}
-        />
-      ))}
+    <div className="sm:w-55 md:w-48 lg:w-47 xl:w-70">
+      <PieChart data={data} innerRadius={70} className="w-full">
+        {data.map((item, index) => (
+          <PieSlice
+            key={item.label}
+            index={index}
+            fill={chartColors.categories[index]}
+          />
+        ))}
 
-      <PieCenter prefix="R$ " />
-    </PieChart>
+        <PieCenter prefix="R$ " />
+      </PieChart>
+    </div>
   );
 };
 

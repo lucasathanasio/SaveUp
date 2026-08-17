@@ -63,12 +63,16 @@ const RecentTransactionsCard = ({
 
       <table className="w-full text-left">
         <thead>
-          <tr className="text-dark-gray/60 text-xs uppercase">
-            <th className="pb-3 font-medium">Transação</th>
-            <th className="pb-3 font-medium">Categoria</th>
-            <th className="pb-3 font-medium">Data</th>
-            <th className="pb-3 font-medium">Valor</th>
-            <th className="pb-3 font-medium">Tipo</th>
+          <tr className="text-dark-gray/60 uppercase">
+            <th className="text-xs md:text-sm pb-3 font-medium">Transação</th>
+            <th className="text-xs md:text-sm hidden md:table-cell pb-3 font-medium">
+              Categoria
+            </th>
+            <th className="text-xs md:text-sm hidden md:table-cell pb-3 font-medium">
+              Data
+            </th>
+            <th className="text-xs md:text-sm pb-3 font-medium">Valor</th>
+            <th className="text-xs md:text-sm pb-3 font-medium">Tipo</th>
           </tr>
         </thead>
         <tbody>
@@ -76,24 +80,36 @@ const RecentTransactionsCard = ({
             <tr key={t.id} className="border-t border-dark-gray/10">
               <td className="py-3 flex items-center gap-3">
                 <span
-                  className="w-8 h-8 rounded-full flex items-center justify-center"
+                  className="hidden sm:flex w-8 h-8 rounded-full items-center justify-center"
                   style={{ backgroundColor: t.iconBg }}
                 >
                   <t.icon className="w-4 h-4" style={{ color: t.iconColor }} />
                 </span>
-                <span className="text-dark-gray font-medium text-sm">
+                <span className="text-xs md:text-sm text-dark-gray font-medium">
                   {t.name}
                 </span>
               </td>
-              <td className="text-dark-gray/70 text-sm">{t.category}</td>
-              <td className="text-dark-gray/70 text-sm">{t.date}</td>
+              <td className="hidden md:table-cell text-dark-gray/70 text-sm">
+                {t.category}
+              </td>
+              <td className="hidden md:table-cell text-dark-gray/70 text-sm">
+                {t.date}
+              </td>
               <td
-                className={`text-sm font-semibold ${
+                className={`text-xs md:text-sm font-semibold ${
                   t.type === "receita" ? "text-medium-green" : "text-medium-red"
                 }`}
               >
-                {t.type === "receita" ? "+ " : "- "}R$
-                {t.value.toFixed(2).replace(".", ",")}
+                {/* Mobile: sem sinal */}
+                <span className="sm:hidden">
+                  R${t.value.toFixed(2).replace(".", ",")}
+                </span>
+
+                {/* Tablet/desktop: com sinal */}
+                <span className="hidden sm:inline">
+                  {t.type === "receita" ? "+ " : "- "}R$
+                  {t.value.toFixed(2).replace(".", ",")}
+                </span>
               </td>
               <td>
                 <TypeBadge type={t.type} />

@@ -45,12 +45,10 @@ const Dashboard = () => {
           <CategoriesPieChart />
         </ChartCard>
 
-        {/*
         <RecentTransactionsCard
           className="md:col-span-3"
           title="Transações Recentes"
         />
-        */}
       </div>
     </>
   );
