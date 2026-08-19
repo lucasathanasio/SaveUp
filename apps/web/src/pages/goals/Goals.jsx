@@ -61,7 +61,7 @@ const goals = [
     iconColor: "var(--color-medium-blue)",
     current: 12000,
     target: 30000,
-    deadline: "Jul 2026",
+    deadline: "2026-07-31",
     status: "atrasado",
   },
   {
@@ -72,7 +72,7 @@ const goals = [
     iconColor: "var(--color-medium-purple)",
     current: 1200,
     target: 15000,
-    deadline: "Ago 2026",
+    deadline: "2026-08-31",
     status: "perto_vencimento",
   },
   {
@@ -83,13 +83,52 @@ const goals = [
     iconColor: "var(--color-medium-pink)",
     current: 3800,
     target: 5000,
-    deadline: "Dez 2026",
+    deadline: "2026-12-31",
     status: "no_prazo",
   },
 ];
 
+const formatDeadline = (date) => {
+  if (!date) return "";
+
+  const [year, month] = date.split("-");
+
+  const monthNames = [
+    "Jan",
+    "Fev",
+    "Mar",
+    "Abr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Set",
+    "Out",
+    "Nov",
+    "Dez",
+  ];
+
+  return `${monthNames[Number(month) - 1]} ${year}`;
+};
+
 const Goals = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingGoal, setEditingGoal] = useState(null);
+
+  const openCreateModal = () => {
+    setEditingGoal(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (goal) => {
+    setEditingGoal(goal);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingGoal(null);
+  };
 
   return (
     <>
@@ -116,13 +155,24 @@ const Goals = () => {
           <Modal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            title="Nova Categoria"
+            title={editingGoal ? "Editar Meta" : "Nova Meta"}
           >
             <GoalForm
-              onCancel={() => setIsModalOpen(false)}
+              initialValues={
+                editingGoal
+                  ? {
+                      id: editingGoal.id,
+                      name: editingGoal.name,
+                      targetValue: editingGoal.target,
+                      currentValue: editingGoal.current,
+                      deadline: editingGoal.deadline,
+                    }
+                  : null
+              }
+              onCancel={closeModal}
               onSubmit={(goal) => {
                 console.log(goal);
-                setIsModalOpen(false);
+                closeModal();
               }}
             />
           </Modal>
@@ -179,8 +229,9 @@ const Goals = () => {
                 topRight={`${percentage.toFixed(0)}%`}
                 barColor={deadlineConfig.barColor}
                 footerLeft={`Meta: R$ ${g.target.toFixed(2).replace(".", ",")}`}
-                footerRight={g.deadline}
+                footerRight={formatDeadline(g.deadline)}
                 footerRightColor={deadlineConfig.color}
+                onEdit={() => openEditModal(g)}
               />
             );
           })}

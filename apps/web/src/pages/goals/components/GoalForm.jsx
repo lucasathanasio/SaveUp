@@ -7,12 +7,22 @@ import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
 import Button from "../../../components/ui/Button";
 import { formatCurrencyInput } from "../../../utils/formatCurrencyInput";
 
-const GoalForm = ({ onSubmit, onCancel }) => {
+const formatNumberToInput = (value) =>
+  value != null
+    ? value.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    : "";
+
+const GoalForm = ({ onSubmit, onCancel, initialValues }) => {
+  const isEditing = Boolean(initialValues);
+
   const [form, setForm] = useState({
-    name: "",
-    targetValue: "",
-    currentValue: "",
-    deadline: "",
+    name: initialValues?.name ?? "",
+    targetValue: formatNumberToInput(initialValues?.targetValue),
+    currentValue: formatNumberToInput(initialValues?.currentValue),
+    deadline: initialValues?.deadline ?? "",
   });
 
   const handleChange = (field) => (e) => {
@@ -39,6 +49,7 @@ const GoalForm = ({ onSubmit, onCancel }) => {
       : 0;
 
     onSubmit({
+      ...(isEditing && { id: initialValues.id }),
       name: form.name.trim(),
       targetValue: numericTargetValue,
       currentValue: numericCurrentValue,
@@ -152,7 +163,7 @@ const GoalForm = ({ onSubmit, onCancel }) => {
         <Button
           type="submit"
           variant="primary"
-          title="Adicionar Meta"
+          title={isEditing ? "Salvar Alterações" : "Adicionar Meta"}
           disabled={!isValid}
         />
         <Button

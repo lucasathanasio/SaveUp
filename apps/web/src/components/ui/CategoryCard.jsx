@@ -33,6 +33,7 @@ const CategoryCard = ({
   spent,
   limit,
   status,
+  onEdit,
 }) => {
   const percentage = Math.min((spent / limit) * 100, 100);
   const remaining = limit - spent;
@@ -41,6 +42,7 @@ const CategoryCard = ({
   return (
     <BaseCard className="relative">
       <button
+        onClick={onEdit}
         className="absolute top-4 right-4 text-dark-gray/60 hover:text-dark-gray/80
       transition"
       >

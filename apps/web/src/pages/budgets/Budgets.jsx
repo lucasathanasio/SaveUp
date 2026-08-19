@@ -153,9 +153,10 @@ const statusConfig = {
 };
 
 const Budgets = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date(2026, 7, 1)); // Agosto/2026, mês inicial
+  const [selectedDate, setSelectedDate] = useState(new Date(2026, 7, 1));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
 
   const monthKey = `${selectedDate.getFullYear()}-${String(
     selectedDate.getMonth() + 1,
@@ -186,6 +187,21 @@ const Budgets = () => {
 
   const handleNextMonth = () => {
     if (hasNextMonth) setSelectedDate(nextMonthDate);
+  };
+
+  const openCreateModal = () => {
+    setEditingCategory(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (category) => {
+    setEditingCategory(category);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingCategory(null);
   };
 
   return (
@@ -226,19 +242,27 @@ const Budgets = () => {
             icon={AddIcon}
             title="Nova"
             description="Categoria"
-            onClick={() => setIsModalOpen(true)}
+            onClick={openCreateModal}
           />
 
           <Modal
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            title="Nova Categoria"
+            onClose={closeModal}
+            title={editingCategory ? "Editar Categoria" : "Nova Categoria"}
           >
             <CategoryForm
-              onCancel={() => setIsModalOpen(false)}
+              initialValues={
+                editingCategory
+                  ? {
+                      name: editingCategory.name,
+                      maxValue: editingCategory.limit,
+                    }
+                  : null
+              }
+              onCancel={closeModal}
               onSubmit={(category) => {
                 console.log(category);
-                setIsModalOpen(false);
+                closeModal();
               }}
             />
           </Modal>
@@ -299,10 +323,14 @@ const Budgets = () => {
                         ? `Restam R$ ${remaining.toFixed(2).replace(".", ",")}`
                         : `Excedido R$ ${Math.abs(remaining).toFixed(2).replace(".", ",")}`
                     }
+                    onEdit={() => openEditModal(c)}
                   />
                 );
               })}
-              <AddItemCard label="Adicionar Categoria" onClick={() => {}} />
+              <AddItemCard
+                label="Adicionar Categoria"
+                onClick={openCreateModal}
+              />
             </div>
           </div>
         </>
