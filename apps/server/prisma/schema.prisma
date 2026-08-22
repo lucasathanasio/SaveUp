@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+enum TransactionType {
+  income
+  expense
+}
+
+enum Theme {
+  light
+  dark
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  name              String
+  email             String   @unique
+  passwordHash      String   @map("password_hash")
+  avatarUrl         String?  @map("avatar_url")
+  twoFactorEnabled  Boolean  @default(false) @map("two_factor_enabled")
+  twoFactorSecret   String?  @map("two_factor_secret")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  settings     UserSettings?
+  categories   Category[]
+  transactions Transaction[]
+  budgets      Budget[]
+  goals        Goal[]
+
+  @@map("users")
+}
+
+model UserSettings {
+  id                   Int      @id @default(autoincrement())
+  userId               Int      @unique @map("user_id")
+  theme                Theme    @default(light)
+  currency             String   @default("BRL")
+  language             String   @default("pt-BR")
+  notificationsEnabled Boolean  @default(true) @map("notifications_enabled")
+  monthlySummaryEmail  Boolean  @default(true) @map("monthly_summary_email")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model Category {
+  id        Int             @id @default(autoincrement())
+  userId    Int             @map("user_id")
+  name      String
+  type      TransactionType
+  icon      String
+  color     String
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  budgets      Budget[]
+
+  @@unique([userId, name, type])
+  @@map("categories")
+}
+
+model Transaction {
+  id          Int             @id @default(autoincrement())
+  userId      Int             @map("user_id")
+  categoryId  Int             @map("category_id")
+  description String
+  amount      Decimal         @db.Decimal(10, 2)
+  type        TransactionType
+  date        DateTime
+  createdAt   DateTime        @default(now()) @map("created_at")
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  @@index([userId, date])
+  @@index([categoryId])
+  @@map("transactions")
+}
+
+model Budget {
+  id          Int     @id @default(autoincrement())
+  userId      Int     @map("user_id")
+  categoryId  Int     @map("category_id")
+  month       Int
+  year        Int
+  limitAmount Decimal @db.Decimal(10, 2) @map("limit_amount")
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, categoryId, month, year])
+  @@index([userId, month, year])
+  @@map("budgets")
+}
+
+model Goal {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("user_id")
+  name         String
+  icon         String
+  targetAmount Decimal  @db.Decimal(10, 2) @map("target_amount")
+  deadline     DateTime
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contributions GoalContribution[]
+
+  @@map("goals")
+}
+
+model GoalContribution {
+  id     Int      @id @default(autoincrement())
+  goalId Int      @map("goal_id")
+  amount Decimal  @db.Decimal(10, 2)
+  date   DateTime
+
+  goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId])
+  @@map("goal_contributions")
+}
