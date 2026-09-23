@@ -2,6 +2,7 @@
   "name": "save-up",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ]
 }
