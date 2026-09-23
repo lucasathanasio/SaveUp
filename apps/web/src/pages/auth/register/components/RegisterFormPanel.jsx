@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { createAccountSchema } from "@saveup/shared";
+
 import PersonIcon from "@mui/icons-material/Person";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import GoogleIcon from "@mui/icons-material/Google";
+// import GoogleIcon from "@mui/icons-material/Google";
 
 import Button from "../../../../components/ui/Button";
 
@@ -36,6 +38,9 @@ const RegisterFormPanel = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const strength = getPasswordStrength(form.password);
   const passwordsMatch =
@@ -45,10 +50,47 @@ const RegisterFormPanel = () => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!passwordsMatch) return;
-    // TODO: integrar com a API de registro
-    console.log("Registrando:", form);
+
+    const result = createAccountSchema.safeParse({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    });
+
+    if (!result.success) {
+      setFieldErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    setFieldErrors({});
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(result.data), // usa result.data, já validado e normalizado (trim, lowercase)
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.message ?? "Erro ao criar conta");
+        return;
+      }
+
+      window.location.href = "/login";
+    } catch (error) {
+      setErrorMessage("Não foi possível conectar ao servidor");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -73,6 +115,11 @@ const RegisterFormPanel = () => {
               className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-dark-gray/5 text-sm
                 outline-none focus:ring-2 focus:ring-dark-blue/30"
             />
+            {fieldErrors.name && (
+              <p className="text-medium-red text-xs mt-1">
+                {fieldErrors.name[0]}
+              </p>
+            )}
           </div>
         </div>
 
@@ -93,6 +140,11 @@ const RegisterFormPanel = () => {
               className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-dark-gray/5 text-sm
                 outline-none focus:ring-2 focus:ring-dark-blue/30"
             />
+            {fieldErrors.name && (
+              <p className="text-medium-red text-xs mt-1">
+                {fieldErrors.name[0]}
+              </p>
+            )}
           </div>
         </div>
 
@@ -113,6 +165,11 @@ const RegisterFormPanel = () => {
               className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-dark-gray/5 text-sm
                 outline-none focus:ring-2 focus:ring-dark-blue/30"
             />
+            {fieldErrors.name && (
+              <p className="text-medium-red text-xs mt-1">
+                {fieldErrors.name[0]}
+              </p>
+            )}
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
@@ -185,14 +242,18 @@ const RegisterFormPanel = () => {
           )}
         </div>
 
+        {errorMessage && (
+          <p className="text-medium-red text-xs text-center">{errorMessage}</p>
+        )}
         <Button
           variant="primary"
-          title="Criar Conta"
+          title={isSubmitting ? "Criando conta..." : "Criar Conta"}
           onClick={handleRegister}
           disabled={
             !isValidEmail(form.email) ||
             !passwordsMatch ||
-            form.password.length < 5
+            form.password.length < 8 ||
+            isSubmitting
           }
           className="w-full justify-center rounded-full mt-2"
         />
@@ -204,6 +265,7 @@ const RegisterFormPanel = () => {
           </Link>
         </p>
 
+        {/* 
         <div className="flex items-center gap-3 my-4">
           <div className="h-px bg-dark-gray/10 flex-1" />
           <span className="text-xs text-dark-gray/40">ou</span>
@@ -218,6 +280,7 @@ const RegisterFormPanel = () => {
           <GoogleIcon style={{ fontSize: 18 }} />
           Continuar com Google
         </button>
+        */}
       </div>
     </div>
   );
