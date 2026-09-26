@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import GuestRoute from "./components/auth/GuestRoute";
 
 import MainLayout from "./components/layout/MainLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -13,19 +15,24 @@ import Login from "./pages/auth/login/Login";
 function App() {
   return (
     <Routes>
-      {/* páginas sem Sidebar e Topbar */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      {/* bloqueadas para quem já está logado */}
+      <Route element={<GuestRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
 
-      {/* páginas com Sidebar e Topbar */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/budgets" element={<Budgets />} />
-        <Route path="/goals" element={<Goals />} />
-        <Route path="/analytics" element={<Analytics />} />
-        <Route path="/settings" element={<Settings />} />
+      {/* exige login para todas as seguintes páginas */}
+      <Route element={<ProtectedRoute />}>
+        {/* páginas com Sidebar e Topbar */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/budgets" element={<Budgets />} />
+          <Route path="/goals" element={<Goals />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
       </Route>
     </Routes>
   );

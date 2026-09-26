@@ -11,3 +11,10 @@ export const createAccountSchema = z.object({
 });
 
 export type CreateAccountInput = z.infer<typeof createAccountSchema>;
+
+export const loginSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Email inválido."),
+  password: z.string().min(1, "A senha é obrigatória"),
+});
+
+export type LoginInput = z.infer<typeof loginSchema>;

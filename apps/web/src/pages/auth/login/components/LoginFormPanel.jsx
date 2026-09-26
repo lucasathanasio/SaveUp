@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { loginSchema } from "@saveup/shared";
+
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -14,14 +16,50 @@ const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
 const LoginFormPanel = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const handleLogin = () => {
-    // TODO: integrar com a API de login
-    console.log("Entrando:", form);
+  const handleLogin = async () => {
+    const result = loginSchema.safeParse(form);
+
+    if (!result.success) {
+      setFieldErrors(result.error.flatten().fieldErrors);
+      return;
+    }
+
+    setFieldErrors({});
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // essencial: sem isso o cookie de sessão não é enviado/aceito
+          body: JSON.stringify(result.data),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(data.message ?? "Erro ao entrar");
+        return;
+      }
+
+      window.location.href = "/dashboard";
+    } catch (error) {
+      setErrorMessage("Não foi possível conectar ao servidor");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,6 +86,11 @@ const LoginFormPanel = () => {
               className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-dark-gray/5 text-sm
                 outline-none focus:ring-2 focus:ring-dark-blue/30"
             />
+            {fieldErrors.email && (
+              <p className="text-medium-red text-xs mt-1">
+                {fieldErrors.email[0]}
+              </p>
+            )}
           </div>
         </div>
 
@@ -68,6 +111,11 @@ const LoginFormPanel = () => {
               className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-dark-gray/5 text-sm
                 outline-none focus:ring-2 focus:ring-dark-blue/30"
             />
+            {fieldErrors.password && (
+              <p className="text-medium-red text-xs mt-1">
+                {fieldErrors.password[0]}
+              </p>
+            )}
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
@@ -89,12 +137,19 @@ const LoginFormPanel = () => {
           Esqueci a Senha
         </Link>
 
+        {errorMessage && (
+          <p className="text-medium-red text-xs text-center">{errorMessage}</p>
+        )}
         <div className="flex justify-center pt-2">
           <Button
             variant="primary"
-            title="Entrar"
+            title={isSubmitting ? "Entrando..." : "Entrar"}
             onClick={handleLogin}
-            disabled={!isValidEmail(form.email) || form.password.length < 5}
+            disabled={
+              !isValidEmail(form.email) ||
+              form.password.length === 0 ||
+              isSubmitting
+            }
             className="rounded-full px-16"
           />
         </div>
@@ -106,6 +161,7 @@ const LoginFormPanel = () => {
           </Link>
         </p>
 
+        {/* 
         <div className="h-px bg-dark-gray/10 my-4" />
 
         <button
@@ -116,6 +172,7 @@ const LoginFormPanel = () => {
           <GoogleIcon style={{ fontSize: 18 }} />
           Continuar com Google
         </button>
+        */}
       </div>
     </div>
   );
