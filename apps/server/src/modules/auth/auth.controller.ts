@@ -65,3 +65,15 @@ export async function meController(req: Request, res: Response) {
 
   return res.status(200).json(user);
 }
+
+export function logoutController(req: Request, res: Response) {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro ao fazer logout" });
+    }
+
+    res.clearCookie("connect.sid");
+    return res.status(200).json({ message: "Logout realizado com sucesso" });
+  });
+}

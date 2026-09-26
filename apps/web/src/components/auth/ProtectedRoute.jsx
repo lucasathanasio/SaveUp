@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const ProtectedRoute = () => {
-  const [status, setStatus] = useState("checking");
+  const { isAuthenticated, isLoading } = useAuth();
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/auth/me`, {
-      credentials: "include",
-    })
-      .then((res) => setStatus(res.ok ? "authenticated" : "unauthenticated"))
-      .catch(() => setStatus("unauthenticated"));
-  }, []);
-
-  if (status === "checking") return null;
-  if (status === "unauthenticated") return <Navigate to="/login" replace />;
+  if (isLoading) return null;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return <Outlet />;
 };

@@ -11,30 +11,33 @@ import Analytics from "./pages/analytics/Analytics";
 import Settings from "./pages/settings/Settings";
 import Register from "./pages/auth/register/Register";
 import Login from "./pages/auth/login/Login";
+import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
   return (
-    <Routes>
-      {/* bloqueadas para quem já está logado */}
-      <Route element={<GuestRoute />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Route>
-
-      {/* exige login para todas as seguintes páginas */}
-      <Route element={<ProtectedRoute />}>
-        {/* páginas com Sidebar e Topbar */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/budgets" element={<Budgets />} />
-          <Route path="/goals" element={<Goals />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/settings" element={<Settings />} />
+    <AuthProvider>
+      <Routes>
+        {/* bloqueadas para quem já está logado */}
+        <Route element={<GuestRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
-      </Route>
-    </Routes>
+
+        {/* exige login para todas as seguintes páginas */}
+        <Route element={<ProtectedRoute />}>
+          {/* páginas com Sidebar e Topbar */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/goals" element={<Goals />} />
+            <Route path="/analytics" element={<Analytics />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 

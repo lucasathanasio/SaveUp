@@ -1,19 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 import AccountInfoCard from "./components/AccountInfoCard";
 import SecurityCard from "./components/SecurityCard";
 import ExportDataCard from "./components/ExportDataCard";
 import PreferencesCard from "./components/PreferencesCard";
 import DangerZoneCard from "./components/DangerZoneCard";
 
-const User = {
-  name: "Marcos Silva",
-  email: "marcossilva@gmail.com",
-  avatarUrl: "https://i.pravatar.cc/150?img=12",
-};
-
 const Settings = () => {
-  const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   const [preferences, setPreferences] = useState({
     darkMode: false,
@@ -44,10 +38,10 @@ const Settings = () => {
       <div className="grid gap-6 md:grid-cols-3 mt-5 px-1">
         <div className="md:col-span-2 flex flex-col gap-6">
           <AccountInfoCard
-            user={User}
+            user={user}
             onSave={(data) => console.log("salvar", data)}
             onCancel={() => {}}
-            onLogout={() => navigate("/login")}
+            onLogout={logout}
           />
 
           <div className="grid sm:grid-cols-2 gap-6">
