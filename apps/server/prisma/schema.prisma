@@ -81,7 +81,7 @@ model Transaction {
   description String
   amount      Decimal         @db.Decimal(10, 2)
   type        TransactionType
-  date        DateTime
+  date        DateTime        @db.Date
   createdAt   DateTime        @default(now()) @map("created_at")
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -114,7 +114,7 @@ model Goal {
   name         String
   icon         String
   targetAmount Decimal  @db.Decimal(10, 2) @map("target_amount")
-  deadline     DateTime
+  deadline    DateTime        @db.Date
   createdAt    DateTime @default(now()) @map("created_at")
 
   user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -127,7 +127,7 @@ model GoalContribution {
   id     Int      @id @default(autoincrement())
   goalId Int      @map("goal_id")
   amount Decimal  @db.Decimal(10, 2)
-  date   DateTime
+  date        DateTime        @db.Date
 
   goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
 
